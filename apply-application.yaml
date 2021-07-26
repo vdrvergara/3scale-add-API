@@ -76,8 +76,13 @@ spec:
     resources: {}
     volumeMounts:
     - mountPath: /config
-      name: toolbox-config
+      name: toolbox
+    - mountPath: /workspace/api-artefacts
+      name: swagger
   volumes:
-  - name: toolbox-config
-    secret:
-      secretName: ${inputs.params.secretName}
+  - name: toolbox
+    config:
+      configName: toolbox
+  - name: swagger
+    config:
+      configName: swagger

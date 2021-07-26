@@ -4,39 +4,15 @@ metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
       {"apiVersion":"tekton.dev/v1alpha1","kind":"Task","metadata":{"annotations":{},"name":"apply-application-plan","namespace":"user1"},"spec":{"inputs":{"params":[{"description":"The name of the 3scale_toolbox remote","name":"destination"},{"description":"Name of the secret containing the 3scale_toolbox remotes list","name":"secretName"},{"description":"The system_name of the service","name":"serviceSystemName"},{"description":"The system_name of the plan to create","name":"systemName"},{"description":"The name of the plan to create","name":"name"}],"resources":[{"name":"api-artefacts","type":"git"}]},"steps":[{"args":["application-plan","apply","${inputs.params.destination}","${inputs.params.serviceSystemName}","${inputs.params.systemName}","--name=${inputs.params.name}"],"command":["3scale"],"env":[{"name":"HOME","value":"/config"}],"image":"nmasse/3scale-toolbox:master","name":"apply-application-plan","volumeMounts":[{"mountPath":"/config","name":"toolbox-config"}]}],"volumes":[{"name":"toolbox-config","secret":{"secretName":"${inputs.params.secretName}"}}]}}
-  creationTimestamp: "2021-07-26T20:35:59Z"
-  generation: 1
-  managedFields:
-  - apiVersion: tekton.dev/v1alpha1
-    fieldsType: FieldsV1
-    fieldsV1:
-      f:metadata:
-        f:annotations:
-          .: {}
-          f:kubectl.kubernetes.io/last-applied-configuration: {}
-      f:spec:
-        .: {}
-        f:inputs:
-          .: {}
-          f:params: {}
-          f:resources: {}
-        f:steps: {}
-        f:volumes: {}
-    manager: oc
-    operation: Update
-    time: "2021-07-26T20:35:59Z"
   name: apply-application-plan
   namespace: user1
-  resourceVersion: "5638090"
-  selfLink: /apis/tekton.dev/v1beta1/namespaces/user1/tasks/apply-application-plan
-  uid: 7153652a-b81b-441d-a303-3b9d4dad124c
 spec:
   params:
   - description: The name of the 3scale_toolbox remote
     name: destination
     type: string
-  - description: Name of the secret containing the 3scale_toolbox remotes list
-    name: secretName
+  - description: Name of the configmap containing the 3scale_toolbox remotes list
+    name: configName
     type: string
   - description: The system_name of the service
     name: serviceSystemName
@@ -69,8 +45,13 @@ spec:
     resources: {}
     volumeMounts:
     - mountPath: /config
-      name: toolbox-config
+      name: toolbox
+    - mountPath: /workspace/api-artefacts
+      name: swagger
   volumes:
-  - name: toolbox-config
-    secret:
-      secretName: ${inputs.params.secretName}
+  - name: toolbox
+    config:
+      configName: toolbox
+  - name: swagger
+    config:
+      configName: swagger

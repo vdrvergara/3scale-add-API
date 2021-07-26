@@ -112,19 +112,6 @@ data:
         api-key: []
 kind: ConfigMap
 metadata:
-  creationTimestamp: "2021-07-26T21:09:04Z"
-  managedFields:
-  - apiVersion: v1
-    fieldsType: FieldsV1
-    fieldsV1:
-      f:data:
-        .: {}
-        f:swagger.yaml: {}
-    manager: oc
-    operation: Update
-    time: "2021-07-26T21:09:04Z"
   name: swagger
   namespace: user1
-  resourceVersion: "5668227"
-  selfLink: /api/v1/namespaces/user1/configmaps/swagger
-  uid: c5d9d1d3-1c24-4ed4-8db1-447df044ed91
+
