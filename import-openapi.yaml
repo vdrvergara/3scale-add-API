@@ -1,0 +1,80 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"tekton.dev/v1alpha1","kind":"Task","metadata":{"annotations":{},"name":"import-openapi","namespace":"user1"},"spec":{"inputs":{"params":[{"default":"/workspace/api-artefacts/openapi-spec.yaml","description":"The path to the dockerfile to build","name":"pathToOpenAPI"},{"description":"The name of the 3scale_toolbox remote","name":"destination"},{"default":"http://echo-api.3scale.net","description":"The URL of the API Backend","name":"privateBaseURL"},{"default":"api","description":"The system_name of the service to create","name":"systemName"},{"description":"Name of the secret containing the 3scale_toolbox remotes list","name":"secretName"}],"resources":[{"name":"api-artefacts","type":"git"}]},"steps":[{"args":["import","openapi","-d","${inputs.params.destination}","${inputs.params.pathToOpenAPI}","--override-private-base-url=${inputs.params.privateBaseURL}","--target_system_name=${inputs.params.systemName}"],"command":["3scale"],"env":[{"name":"HOME","value":"/config"}],"image":"nmasse/3scale-toolbox:master","name":"import-openapi","volumeMounts":[{"mountPath":"/config","name":"toolbox-config"}]}],"volumes":[{"name":"toolbox-config","secret":{"secretName":"${inputs.params.secretName}"}}]}}
+  creationTimestamp: "2021-07-26T20:35:59Z"
+  generation: 1
+  managedFields:
+  - apiVersion: tekton.dev/v1alpha1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:kubectl.kubernetes.io/last-applied-configuration: {}
+      f:spec:
+        .: {}
+        f:inputs:
+          .: {}
+          f:params: {}
+          f:resources: {}
+        f:steps: {}
+        f:volumes: {}
+    manager: oc
+    operation: Update
+    time: "2021-07-26T20:35:59Z"
+  name: import-openapi
+  namespace: user1
+  resourceVersion: "5638088"
+  selfLink: /apis/tekton.dev/v1beta1/namespaces/user1/tasks/import-openapi
+  uid: da97d520-88c5-4579-ba0b-fdc9123f1767
+spec:
+  params:
+  - default: /workspace/api-artefacts/openapi-spec.yaml
+    description: The path to the dockerfile to build
+    name: pathToOpenAPI
+    type: string
+  - description: The name of the 3scale_toolbox remote
+    name: destination
+    type: string
+  - default: http://echo-api.3scale.net
+    description: The URL of the API Backend
+    name: privateBaseURL
+    type: string
+  - default: api
+    description: The system_name of the service to create
+    name: systemName
+    type: string
+  - description: Name of the secret containing the 3scale_toolbox remotes list
+    name: secretName
+    type: string
+  resources:
+    inputs:
+    - name: api-artefacts
+      type: git
+  steps:
+  - args:
+    - import
+    - openapi
+    - -d
+    - ${inputs.params.destination}
+    - ${inputs.params.pathToOpenAPI}
+    - --override-private-base-url=${inputs.params.privateBaseURL}
+    - --target_system_name=${inputs.params.systemName}
+    command:
+    - 3scale
+    env:
+    - name: HOME
+      value: /config
+    image: nmasse/3scale-toolbox:master
+    name: import-openapi
+    resources: {}
+    volumeMounts:
+    - mountPath: /config
+      name: toolbox-config
+  volumes:
+  - name: toolbox-config
+    secret:
+      secretName: ${inputs.params.secretName}

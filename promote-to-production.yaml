@@ -1,0 +1,63 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"tekton.dev/v1alpha1","kind":"Task","metadata":{"annotations":{},"name":"promote-to-production","namespace":"user1"},"spec":{"inputs":{"params":[{"description":"The name of the 3scale_toolbox remote","name":"destination"},{"description":"Name of the secret containing the 3scale_toolbox remotes list","name":"secretName"},{"description":"The system_name of the service","name":"serviceSystemName"}]},"steps":[{"args":["proxy","promote","${inputs.params.destination}","${inputs.params.serviceSystemName}"],"command":["3scale"],"env":[{"name":"HOME","value":"/config"}],"image":"nmasse/3scale-toolbox:master","name":"promote-to-production","volumeMounts":[{"mountPath":"/config","name":"toolbox-config"}]}],"volumes":[{"name":"toolbox-config","secret":{"secretName":"${inputs.params.secretName}"}}]}}
+  creationTimestamp: "2021-07-26T20:36:00Z"
+  generation: 1
+  managedFields:
+  - apiVersion: tekton.dev/v1alpha1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:kubectl.kubernetes.io/last-applied-configuration: {}
+      f:spec:
+        .: {}
+        f:inputs:
+          .: {}
+          f:params: {}
+        f:steps: {}
+        f:volumes: {}
+    manager: oc
+    operation: Update
+    time: "2021-07-26T20:36:00Z"
+  name: promote-to-production
+  namespace: user1
+  resourceVersion: "5638095"
+  selfLink: /apis/tekton.dev/v1beta1/namespaces/user1/tasks/promote-to-production
+  uid: 2d81ba61-de60-418a-b317-5c193bcd0967
+spec:
+  params:
+  - description: The name of the 3scale_toolbox remote
+    name: destination
+    type: string
+  - description: Name of the secret containing the 3scale_toolbox remotes list
+    name: secretName
+    type: string
+  - description: The system_name of the service
+    name: serviceSystemName
+    type: string
+  steps:
+  - args:
+    - proxy
+    - promote
+    - ${inputs.params.destination}
+    - ${inputs.params.serviceSystemName}
+    command:
+    - 3scale
+    env:
+    - name: HOME
+      value: /config
+    image: nmasse/3scale-toolbox:master
+    name: promote-to-production
+    resources: {}
+    volumeMounts:
+    - mountPath: /config
+      name: toolbox-config
+  volumes:
+  - name: toolbox-config
+    secret:
+      secretName: ${inputs.params.secretName}

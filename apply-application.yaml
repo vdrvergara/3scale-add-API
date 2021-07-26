@@ -1,0 +1,83 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"tekton.dev/v1alpha1","kind":"Task","metadata":{"annotations":{},"name":"apply-application","namespace":"user1"},"spec":{"inputs":{"params":[{"description":"The name of the 3scale_toolbox remote","name":"destination"},{"description":"Name of the secret containing the 3scale_toolbox remotes list","name":"secretName"},{"description":"The system_name of the service","name":"serviceSystemName"},{"description":"The system_name of the application plan","name":"planSystemName"},{"description":"The name of the application to create","name":"name"},{"description":"The description of the application to create","name":"description"},{"description":"The API Key of the Application","name":"userKey"},{"description":"The Application's account ID","name":"account"}]},"steps":[{"args":["application","apply","${inputs.params.destination}","${inputs.params.userKey}","--service=${inputs.params.serviceSystemName}","--plan=${inputs.params.planSystemName}","--name=${inputs.params.name}","--description=${inputs.params.description}","--account=${inputs.params.account}"],"command":["3scale"],"env":[{"name":"HOME","value":"/config"}],"image":"nmasse/3scale-toolbox:master","name":"apply-application","volumeMounts":[{"mountPath":"/config","name":"toolbox-config"}]}],"volumes":[{"name":"toolbox-config","secret":{"secretName":"${inputs.params.secretName}"}}]}}
+  creationTimestamp: "2021-07-26T20:36:00Z"
+  generation: 1
+  managedFields:
+  - apiVersion: tekton.dev/v1alpha1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:kubectl.kubernetes.io/last-applied-configuration: {}
+      f:spec:
+        .: {}
+        f:inputs:
+          .: {}
+          f:params: {}
+        f:steps: {}
+        f:volumes: {}
+    manager: oc
+    operation: Update
+    time: "2021-07-26T20:36:00Z"
+  name: apply-application
+  namespace: user1
+  resourceVersion: "5638093"
+  selfLink: /apis/tekton.dev/v1beta1/namespaces/user1/tasks/apply-application
+  uid: 59034e6f-1a40-4d83-9af7-47f10b3f4116
+spec:
+  params:
+  - description: The name of the 3scale_toolbox remote
+    name: destination
+    type: string
+  - description: Name of the secret containing the 3scale_toolbox remotes list
+    name: secretName
+    type: string
+  - description: The system_name of the service
+    name: serviceSystemName
+    type: string
+  - description: The system_name of the application plan
+    name: planSystemName
+    type: string
+  - description: The name of the application to create
+    name: name
+    type: string
+  - description: The description of the application to create
+    name: description
+    type: string
+  - description: The API Key of the Application
+    name: userKey
+    type: string
+  - description: The Application's account ID
+    name: account
+    type: string
+  steps:
+  - args:
+    - application
+    - apply
+    - ${inputs.params.destination}
+    - ${inputs.params.userKey}
+    - --service=${inputs.params.serviceSystemName}
+    - --plan=${inputs.params.planSystemName}
+    - --name=${inputs.params.name}
+    - --description=${inputs.params.description}
+    - --account=${inputs.params.account}
+    command:
+    - 3scale
+    env:
+    - name: HOME
+      value: /config
+    image: nmasse/3scale-toolbox:master
+    name: apply-application
+    resources: {}
+    volumeMounts:
+    - mountPath: /config
+      name: toolbox-config
+  volumes:
+  - name: toolbox-config
+    secret:
+      secretName: ${inputs.params.secretName}
